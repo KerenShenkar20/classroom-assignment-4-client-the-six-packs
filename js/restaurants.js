@@ -1,23 +1,24 @@
-$(function() {
+$(function () {
     getAllRestaurants();
     restaurantOperationsListeners();
 });
 
 function getAllRestaurants() {
     $.ajax({
-        url: 'http://localhost:3000/api/restaurants',
+        url: 'http://localhost:8000/api/restaurants',
         type: 'GET',
-        success: function(rests) {
+        success: function (rests) {
             recreateRestaurantsTable(rests);
+            //console.log(rests);
         }
     });
 }
 
 function getRestaurantById(restaurantId) {
     $.ajax({
-        url: `http://localhost:3000/api/restaurants/${restaurantId}`,
+        url: `http://localhost:8000/api/restaurants/${restaurantId}`,
         type: 'GET',
-        success: function(rest) {
+        success: function (rest) {
             showRestaurant(rest);
         }
     });
@@ -29,7 +30,7 @@ function showRestaurant(rest) {
     $("#restaurant-result").append(
         '<p>' +
         'Name: ' + rest.name + '<br>' +
-        'Longitude: '  + rest.location[0].lng + '<br>' +
+        'Longitude: ' + rest.location[0].lng + '<br>' +
         'Latitude: ' + rest.location[0].lat + '<br>' +
         'Stars: ' + rest.stars + '<br>' +
         '<p>'
@@ -38,10 +39,23 @@ function showRestaurant(rest) {
 
 function recreateRestaurantsTable(rests) {
     $("table").empty().remove();
+    // $("#restaurant-result").empty().remove();
+    rests.map(item => {
+        // console.log(rests);
+        // if(item)
+        //     item.location[0].lng = 0;
+        // console.log(item.location[0]);
 
-    // Continue
+        $("#restaurants-list").append(
+            '<p>' +
+            'Name: ' + item.name + '<br>' +
+            'Longitude: ' + item.location[0].lng + '<br>' +
+            'Latitude: ' + item.location[0].lat + '<br>' +
+            'Stars: ' + item.stars + '<br>' +
+            '<p>'
+        );
+    })
 
-    $('#restaurants-list').append("");
 }
 
 function restaurantOperationsListeners() {
@@ -52,6 +66,7 @@ function restaurantOperationsListeners() {
 
     $("#delete-button").click(() => {
         $("#get-delete-restaurant").css("display", "none");
+
         alert("Delete");
     });
 
@@ -73,5 +88,6 @@ function restaurantOperationsListeners() {
         } else {
             // Delete
         }
-    });
+    }
+    );
 }
